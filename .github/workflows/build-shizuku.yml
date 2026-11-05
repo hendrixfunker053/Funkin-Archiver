@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '*.zip'
+      - 'funkinarchiver.zip'
       - '.github/workflows/build-shizuku.yml'
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
         run: |
           archive=$(find . -maxdepth 1 -type f -iname 'funkinarchiver.zip' -print -quit)
           if [ -z "$archive" ]; then
-            echo 'No se encontró FunkinArchiver_v15*.zip en la raíz del repositorio.'
+            echo 'No se encontró funkinarchiver.zip en la raíz del repositorio.'
             exit 1
           fi
           mkdir project
@@ -32,9 +32,11 @@ jobs:
           java-version: '17'
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
 
-      - name: Install Android SDK Platform 35
+      - name: Install Android SDK Platform 35 and Build Tools 35.0.0
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle 8.7
